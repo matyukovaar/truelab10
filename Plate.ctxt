@@ -1,9 +1,13 @@
 #BlueJ class context
 comment0.target=Plate
-comment1.params=x1\ x2\ y1\ y2
-comment1.target=Plate(int,\ int,\ int,\ int)
-comment2.params=
-comment2.target=boolean\ isEmpty()
-comment3.params=ing
-comment3.target=boolean\ addIngredient(Ingredient)
-numComments=4
+comment1.params=
+comment1.target=void\ act()
+comment2.params=x1\ x2\ y1\ y2
+comment2.target=Plate(int,\ int,\ int,\ int)
+comment3.params=
+comment3.target=boolean\ isEmpty()
+comment4.params=ing
+comment4.target=boolean\ addIngredient(Ingredient)
+comment5.params=
+comment5.target=boolean\ makeFree()
+numComments=6

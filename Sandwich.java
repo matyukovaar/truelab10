@@ -18,9 +18,12 @@ public class Sandwich extends Food
     }
     // добавление в блюлюдо ингре инг чунг чанг чон вон хочу отт тебя 7 детей
     public boolean addIngredient(Ingredient ing){
-        ingredients.add(ing);
-        updateImage();
-        return true;
+        if (ing instanceof Tomato || ing instanceof Bread) {
+            ingredients.add(ing);
+            updateImage();
+            return true;
+        }
+        return false;
     }
     // обновление спрайта еды
     //private void updateImage() {setImage("bomj.png");}; // отладочный
@@ -38,12 +41,12 @@ public class Sandwich extends Food
         // графические штучки
         java.awt.Graphics2D g2 = foodImage.getAwtImage().createGraphics();
         // рисуем каждый ингредиент
-        int y = sizeY-80;
+        int y = sizeY-90;
         for (Ingredient ing : ingredients) {
             GreenfootImage ingredientImage = new GreenfootImage(ing.getPicture());
             ingredientImage.scale(c(ing.size), c(ing.size));
             // центрирование
-            int x = (foodImage.getWidth() - ingredientImage.getWidth()) / 2;
+            int x = (foodImage.getWidth() - ingredientImage.getWidth()) / 2 + 8;
             // вертикальная позиция + смещение
             g2.drawImage(ingredientImage.getAwtImage(), c(x), c(y), null);
             y -= YOFF;
