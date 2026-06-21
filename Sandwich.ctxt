@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=Sandwich
+comment1.params=
+comment1.target=Sandwich()
+comment2.params=ing
+comment2.target=boolean\ addIngredient(Ingredient)
+comment3.params=
+comment3.target=void\ updateImage()
+comment4.params=
+comment4.target=int\ ySpawnOffset()
+numComments=5

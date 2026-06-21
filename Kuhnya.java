@@ -20,12 +20,30 @@ public class Kuhnya extends World
         setBackground(image);
         prepare();
     }
-    private void prepare()
-    {
-        Tomato tomato = new Tomato();
-        addObject(tomato,666,308);
-        
+    private void setZones() {
+        // помойка трешшш
         Trash trash = new Trash();
         addObject(trash, trash.getFinalX(), trash.getFinalY());
+        // тарелки платы
+        Plate plate1 = new Plate(770, 930, 430, 490);
+        addObject(plate1, plate1.getFinalX(), plate1.getFinalY());
+    }
+    
+    private void prepare()
+    {
+        // зона зоны передачка на зону сидеть на зоне няшка зоняшка 
+        setZones();
+
+        Tomato tomato = new Tomato();
+        addObject(tomato,666,308);
+        Tomato tomato2 = new Tomato();
+        addObject(tomato2,588,329);
+        tomato2.setLocation(588,304);
+        Tomato tomato3 = new Tomato();
+        addObject(tomato3,588,304);
+        Tomato tomato4 = new Tomato();
+        addObject(tomato4,517,314);
+        Bread bread = new Bread();
+        addObject(bread,626,282);
     }
 }

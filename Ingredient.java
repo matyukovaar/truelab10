@@ -5,7 +5,7 @@ public abstract class Ingredient extends Actor {
     // коэф для размера спрайта
     double COEF = Kuhnya.COEF;
     // размер по базе, может меняться
-    int size = 100;
+    protected int size = 100;
     // картинка
     String picture = "bomj.png";
     // помнит контейнер которому принадлежит
@@ -30,11 +30,13 @@ public abstract class Ingredient extends Actor {
         image.scale(c(size), c(size));
         setImage(image);
     }
+    // получение названия спрайта для отрисовки
+    public String getPicture() {
+        return picture;
+    }
     // контроль перетаскивания
     private void mouseControl(){
         if(Greenfoot.mousePressed(this)){
-            size = 600;
-            setPicture();
             dragging = true;
             startX = getX();
             startY = getY();
@@ -44,7 +46,8 @@ public abstract class Ingredient extends Actor {
             if(mouse != null){
                 setLocation(
                     mouse.getX(),
-                    mouse.getY()
+                    // чтобы высокие спрайты еды хватались не за центр
+                    mouse.getY() - getImage().getHeight()/2 + 15
                 );
             }
         }
@@ -54,30 +57,21 @@ public abstract class Ingredient extends Actor {
         }
     }
     private void checkDrop(){
-        // Plate plate = (Plate)getOneIntersectingObject(Plate.class);
-        // if(plate != null){
-            // if(plate.canAccept(this)){
-                // plate.addIngredient(this);
-                // getWorld().removeObject(this);
-                // return;
-            // }
-        // }
-
-
-
-        // Trash trash =
-        // (Trash)getOneIntersectingObject(Trash.class);
-
-
-
-        // if(trash != null){
-
-            // getWorld().removeObject(this);
-
-            // return;
-
-        // }
-
+        // если мусорка
+        Trash trash = (Trash)getOneIntersectingObject(Trash.class);
+        if(trash != null){
+            getWorld().removeObject(this);
+            return;
+        }
+        
+        // если ТАРЕЛКА
+        Plate plate = (Plate)getOneIntersectingObject(Plate.class);
+        if(plate != null){
+            if(plate.addIngredient(this)){
+                getWorld().removeObject(this);
+                return;
+            }
+        }
 
 
         // если никуда не положили

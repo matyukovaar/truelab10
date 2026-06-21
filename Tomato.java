@@ -1,8 +1,8 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;  
 
 public class Tomato extends Ingredient 
 {
     public Tomato() {
-        setPicture();
+        setPicture("tomato.png");
     }
 }
