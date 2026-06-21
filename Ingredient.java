@@ -1,103 +1,130 @@
-import greenfoot.*;  
+import greenfoot.*;
 
-// абстрактный класс для ингридиентов
 public abstract class Ingredient extends Actor {
-    // коэф для размера спрайта
     double COEF = Kuhnya.COEF;
-    // размер по базе, может меняться
     protected int size = 100;
-    // картинка
+    protected int sizeY = 100;
     String picture = "bomj.png";
-    // перетаскивается ли
     boolean dragging = false;
-    // коорды начала перетаскивания
     int startX;
     int startY;
+    private IngredientZone homeZone;
+    private Container homeContainer;
+    private boolean isPlaced = false;
     
-    public void act(){
-        mouseControl();
-    }
-    // задает спрайт нужной картинки нужных размеров size и c
-    // варианты с аргументом и без
     protected void setPicture(String fileName) {
         picture = fileName;
         setPicture();
     }
+    
     protected void setPicture() {
         GreenfootImage image = new GreenfootImage(picture);
-        image.scale(c(size), c(size));
+        image.scale(c(size), c(sizeY));
         setImage(image);
     }
-    // получение названия спрайта для отрисовки
+    
     public String getPicture() {
         return picture;
     }
-    // контроль перетаскивания
-    private void mouseControl(){
-        if(Greenfoot.mousePressed(this)){
-            dragging = true;
-            startX = getX();
-            startY = getY();
-        }
-        if(dragging){
-            MouseInfo mouse = Greenfoot.getMouseInfo();
-            if(mouse != null){
-                setLocation(
-                    mouse.getX(),
-                    // чтобы высокие спрайты еды хватались не за центр
-                    mouse.getY() - getImage().getHeight()/2 + 15
-                );
-            }
-        }
-        if(Greenfoot.mouseDragEnded(this)){
-            dragging = false;
-            checkDrop();
-        }
+    
+    public void setHomeZone(IngredientZone zone) {
+        this.homeZone = zone;
     }
-    private void checkDrop(){
-        // координаты мыши
-        MouseInfo mouse = Greenfoot.getMouseInfo();
-        if (mouse == null) return; 
-        int mouseX = mouse.getX();
-        int mouseY = mouse.getY();
+    
+    public void setHomeContainer(Container container) {
+        this.homeContainer = container;
+        this.isPlaced = true;
+    }
+    
+    public Container getHomeContainer() {
+        return homeContainer;
+    }
+    
+    public boolean isPlaced() {
+        return isPlaced;
+    }
+    
+    public void resetPlaced() {
+        isPlaced = false;
+        homeContainer = null;
+    }
+    
+    protected void checkDrop() {
+        if (getWorld() == null) return;
         
-        // получение мусорки если с ней есть пересечение
+        MouseInfo mouse = Greenfoot.getMouseInfo();
+        if (mouse == null) return;
+        
         Trash trash = getContainerAtMouse(Trash.class);
         if (trash != null) {
-            // если блюдо выбрасывается отвязываем его от домика
-            if (this instanceof Food) {
-                Container homeContainer = ((Food) this).home;
-                if (homeContainer instanceof Plate) {
-                    ((Plate) homeContainer).makeFree();
-                }
+            removeFromContainer();
+            if (getWorld() != null) {
+                getWorld().removeObject(this);
             }
-            getWorld().removeObject(this);
             return;
         }
         
-        // если ТАРЕЛКА
-        Plate plate = getContainerAtMouse(Plate.class);
-        if (plate != null) {
-            // если можем добавить на тарелку
-            if(plate.addIngredient(this)){
-                // если это еда - тарелка нас сама запомнит
-                // если не еда - надо удалиться
-                if (!(this instanceof Food)) {
-                    getWorld().removeObject(this);
-                }
+        Pan pan = getContainerAtMouse(Pan.class);
+        if (pan != null && pan.isEmpty()) {
+            if (pan.addIngredient(this)) {
                 return;
             }
         }
-
-
-
-        // если никуда не положили
         
-        // setLocation(        );
+        Plate plate = getContainerAtMouse(Plate.class);
+        if (plate != null) {
+            if (plate.addIngredient(this)) {
+                return;
+            }
+        }
+        
+        DrinkStation station = getContainerAtMouse(DrinkStation.class);
+        if (station != null && station.isEmpty()) {
+            if (station.addIngredient(this)) {
+                return;
+            }
+        }
+        
+        if (isPlaced) {
+            returnToHome();
+        } else {
+            if (getWorld() != null) {
+                getWorld().removeObject(this);
+            }
+        }
     }
     
-    // проверка на пересечения с объектами класса, потом проверка на нем ли курсор
+    private void returnToHome() {
+        if (homeContainer != null) {
+            if (homeContainer instanceof Plate) {
+                Plate plate = (Plate) homeContainer;
+                plate.returnIngredient(this);
+            } else if (homeContainer instanceof Pan) {
+                Pan pan = (Pan) homeContainer;
+                pan.returnIngredient(this);
+            } else if (homeContainer instanceof DrinkStation) {
+                DrinkStation station = (DrinkStation) homeContainer;
+                station.returnIngredient(this);
+            }
+        }
+        resetPlaced();
+    }
+    
+    private void removeFromContainer() {
+        if (homeContainer != null) {
+            if (homeContainer instanceof Plate) {
+                ((Plate) homeContainer).removeIngredient(this);
+            } else if (homeContainer instanceof Pan) {
+                ((Pan) homeContainer).removeIngredient(this);
+            } else if (homeContainer instanceof DrinkStation) {
+                ((DrinkStation) homeContainer).removeIngredient(this);
+            }
+        }
+    }
+    
     public <T extends Actor> T getContainerAtMouse(Class<T> type) {
+        if (getWorld() == null) return null;
+        
         MouseInfo mouse = Greenfoot.getMouseInfo();
         if (mouse == null) return null;
         
@@ -115,6 +142,7 @@ public abstract class Ingredient extends Actor {
         return null;
     }
     
-    // перевод всех координат в отмасштабированные
-    public int c(int x) {return (int)(x*COEF);}
+    public int c(int x) {
+        return (int)(x * COEF);
+    }
 }

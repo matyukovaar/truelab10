@@ -1,41 +1,79 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
-public class Kuhnya extends World
-{
-    //========================ОТЛАДКА=============================
-    // коэф от базового размера 
+public class Kuhnya extends World {
     public static final double COEF = 0.5;
-    // тесты
     public static final boolean TESTZONES = true;
-    //============================================================
     
-    private static final int WIDTH = (int)(1600*COEF);
-    private static final int HEIGHT = (int)(800*COEF);
+    private static final int WIDTH = (int)(1600 * COEF);
+    private static final int HEIGHT = (int)(800 * COEF);
 
-    public Kuhnya()
-    {    
+    public Kuhnya() {    
         super(WIDTH, HEIGHT, 1); 
         GreenfootImage image = new GreenfootImage("kuhnya.png");
         image.scale(WIDTH, HEIGHT);
         setBackground(image);
         prepare();
     }
+    
     private void setZones() {
-        // помойка трешшш
+        // Мусорка
         Trash trash = new Trash();
         addObject(trash, trash.getFinalX(), trash.getFinalY());
-        // тарелко тарелко тарелко
-        Plate plate1 = new Plate(770, 930, 430, 490);
-        addObject(plate1, plate1.getFinalX(), plate1.getFinalY());
-        Plate plate2 = new Plate(943, 1096, 430, 490);
-        addObject(plate2, plate2.getFinalX(), plate2.getFinalY());
+        
+        // 6 Сковородок
+        addObject(new Pan(250, 410, 423, 483), c(330), c(453));
+        addObject(new Pan(450, 610, 423, 483), c(530), c(453));
+    
+        addObject(new Pan(210, 370, 500, 560), c(290), c(530));
+        addObject(new Pan(420, 580, 500, 560), c(500), c(530));
+
+        addObject(new Pan(155, 315, 585, 645), c(235), c(615));
+        addObject(new Pan(380, 540, 585, 645), c(460), c(615));
+    
+        // 9 Тарелок
+        addObject(new Plate(770, 930, 423, 483), c(850), c(453));
+        addObject(new Plate(940, 1100, 423, 483), c(1020), c(453));
+        addObject(new Plate(1106, 1266, 423, 483), c(1186), c(453));
+        
+        addObject(new Plate(765, 925, 508, 568), c(845), c(538));
+        addObject(new Plate(940, 1100, 508, 568), c(1020), c(538));
+        addObject(new Plate(1120, 1280, 508, 568), c(1200), c(538));
+        
+        addObject(new Plate(760, 920, 614, 674), c(840), c(644));
+        addObject(new Plate(960, 1120, 614, 674), c(1040), c(644));
+        addObject(new Plate(1145, 1305, 614, 674), c(1225), c(644));
+        
+        // 3 напитка
+        addObject(new DrinkStation(1360, 1420, 450, 550, "coffee1"), c(1390), c(500));
+        addObject(new DrinkStation(1430, 1490, 450, 550, "coffee2"), c(1460), c(500));
+        addObject(new DrinkStation(1500, 1560, 450, 550, "coffee3"), c(1530), c(500));
     }
     
-    private void prepare()
-    {
-        // зона зоны передачка на зону сидеть на зоне няшка зоняшка 
+    private void setIngredientZones() {
+        // База
+        addObject(new IngredientZone("bread", "bread.png", 170, 100), c(840), c(740));
+        addObject(new IngredientZone("mashed", "mashed.png", 170, 100), c(1040), c(740));
+        addObject(new IngredientZone("rice", "rice.png", 170, 100), c(1240), c(740));
+        
+        // Дополнительные
+        addObject(new IngredientZone("sauce", "sauce.png", 120, 100), c(700), c(460));
+        addObject(new IngredientZone("tomato", "tomato.png", 120, 100), c(680), c(560));
+        addObject(new IngredientZone("lettuce", "lettuce.png", 120, 100), c(660), c(660));
+        
+        // Для жарки
+        addObject(new IngredientZone("egg", "egg.png", 190, 100), c(210), c(735));
+        addObject(new IngredientZone("cutlet", "cutlet.png", 180, 100), c(425), c(735));
+        
+        // Стаканы
+        addObject(new CupSpawner(100, 100), c(50), c(450));
+    }
+    
+    private void prepare() {
         setZones();
-        Bread bread = new Bread();
-        addObject(bread,555,304);
+        setIngredientZones();
+    }
+    
+    private int c(int x) {
+        return (int)(x * COEF);
     }
 }

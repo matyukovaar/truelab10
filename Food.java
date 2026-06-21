@@ -1,12 +1,67 @@
-import greenfoot.*; 
-import java.util.ArrayList;
+import greenfoot.*;
 
-public abstract class Food extends Ingredient 
-{
-    // домик где хранится данная еда
+public abstract class Food extends Ingredient {
     public Container home;
-    // смещение для спавна
+    
     public abstract int ySpawnOffset();
-    // Добавление ингредиента
     public abstract boolean addIngredient(Ingredient ing);
+    public abstract void removeIngredient(Ingredient ing);
+    
+    public void act() {
+        mouseControl();
+    }
+    
+    private void mouseControl() {
+        if (Greenfoot.mousePressed(this)) {
+            dragging = true;
+            startX = getX();
+            startY = getY();
+            
+            if (home != null && home instanceof Plate) {
+                ((Plate) home).food = null;
+            }
+        }
+        if (dragging) {
+            MouseInfo mouse = Greenfoot.getMouseInfo();
+            if (mouse != null) {
+                setLocation(mouse.getX(), mouse.getY() - getImage().getHeight()/2 + 15);
+            }
+        }
+        if (Greenfoot.mouseDragEnded(this)) {
+            dragging = false;
+            checkDrop();
+        }
+    }
+    
+    protected void checkDrop() {
+        MouseInfo mouse = Greenfoot.getMouseInfo();
+        if (mouse == null) return;
+        
+        Plate plate = getContainerAtMouse(Plate.class);
+        if (plate != null && plate.isEmpty()) {
+            plate.food = this;
+            this.home = plate;
+            int centerX = plate.x1 + (plate.x2 - plate.x1) / 2;
+            setLocation(c(centerX), c(plate.y2 - ySpawnOffset()));
+            return;
+        }
+        
+        Trash trash = getContainerAtMouse(Trash.class);
+        if (trash != null) {
+            if (home != null && home instanceof Plate) {
+                ((Plate) home).makeFree();
+            }
+            getWorld().removeObject(this);
+            return;
+        }
+        
+        if (home != null && home instanceof Plate) {
+            Plate oldPlate = (Plate) home;
+            oldPlate.food = this;
+            int centerX = oldPlate.x1 + (oldPlate.x2 - oldPlate.x1) / 2;
+            setLocation(c(centerX), c(oldPlate.y2 - ySpawnOffset()));
+        } else {
+            getWorld().removeObject(this);
+        }
+    }
 }

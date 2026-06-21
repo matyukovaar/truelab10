@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=DrinkStation
+comment1.params=x1\ x2\ y1\ y2\ type
+comment1.target=DrinkStation(int,\ int,\ int,\ int,\ java.lang.String)
+comment10.params=
+comment10.target=int\ getState()
+comment11.params=
+comment11.target=Cup\ getCup()
+comment2.params=
+comment2.target=void\ act()
+comment3.params=
+comment3.target=void\ updateCooking()
+comment4.params=
+comment4.target=void\ updateImage()
+comment5.params=
+comment5.target=boolean\ isEmpty()
+comment6.params=ing
+comment6.target=boolean\ addIngredient(Ingredient)
+comment7.params=ing
+comment7.target=void\ returnIngredient(Ingredient)
+comment8.params=ing
+comment8.target=void\ removeIngredient(Ingredient)
+comment9.params=
+comment9.target=boolean\ makeFree()
+numComments=12
