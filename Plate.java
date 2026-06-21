@@ -1,9 +1,8 @@
-import greenfoot.*; 
+import greenfoot.*;
 
-public class Plate extends Container
-{
-    // еда на тарелке
+public class Plate extends Container {
     Food food;
+    
     public void act() {
         if (isEmpty()) {
             GreenfootImage photo = getImage();
@@ -23,49 +22,64 @@ public class Plate extends Container
         super(x1, x2, y1, y2); 
     }
     
-    // пустая ли тарелка
     public boolean isEmpty() {
         if (food == null) return true;
         return false;
     }
     
-    // добавить кусок еды (положить огрызок) на тарелку
     public boolean addIngredient(Ingredient ing) {
-        // если тарелка пуста
-        if (isEmpty()) {
-            // если кладем в пустую какое-то собранное Блюдо
-            if (ing instanceof Food) {
-                // запоминаем это блюдо как наше, и говорим ему
-                ((Plate)(((Food)(ing)).home)).food = null; // старая тарелка забывает это блюдо 
-                ((Food)(ing)).home = this;
-                food = (Food)ing;
-                // кладем еду куда надо
-                int centerX = x1 + (x2 - x1) / 2;
-                food.setLocation(c(centerX), c(y2-food.ySpawnOffset()));
-                return true;
+    if (isEmpty()) {
+        if (ing instanceof Food) {
+            if (((Food)(ing)).home != null && ((Food)(ing)).home instanceof Plate) {
+                ((Plate)(((Food)(ing)).home)).food = null;
             }
-            // если кладем в пустую хлеб
-            if (ing instanceof Bread) {
-                // создаем новое блюдо бутерброд и сразу кладем туда хлеб, рождаем его
-                food = new Sandwich();
-                food.addIngredient(ing);
-                int centerX = x1 + (x2 - x1) / 2;
-                getWorld().addObject(food, c(centerX), c(y2-food.ySpawnOffset()));
-                // бутерброд запоминает свой дом
-                food.home = this;
-                return true;
-            }
-            // если кладем не базу
-            return false;
+            ((Food)(ing)).home = this;
+            food = (Food)ing;
+            int centerX = x1 + (x2 - x1) / 2;
+            food.setLocation(c(centerX), c(y2-food.ySpawnOffset()));
+            return true;
         }
-        // если не пусто
-        if (food instanceof Sandwich) {
-            return food.addIngredient(ing);
+        // Хлеб → Sandwich
+        if (ing instanceof Bread) {
+            food = new Sandwich();
+            food.addIngredient(ing);
+            int centerX = x1 + (x2 - x1) / 2;
+            getWorld().addObject(food, c(centerX), c(y2-food.ySpawnOffset()));
+            food.home = this;
+            getWorld().removeObject(ing);
+            return true;
+        }
+        // Рис → RiceDish
+        if (ing instanceof Rice) {
+            food = new RiceDish();
+            food.addIngredient(ing);
+            int centerX = x1 + (x2 - x1) / 2;
+            getWorld().addObject(food, c(centerX), c(y2-food.ySpawnOffset()));
+            food.home = this;
+            getWorld().removeObject(ing);
+            return true;
+        }
+        // Пюре → MashedDish
+        if (ing instanceof MashedPotatoes) {
+            food = new MashedDish();
+            food.addIngredient(ing);
+            int centerX = x1 + (x2 - x1) / 2;
+            getWorld().addObject(food, c(centerX), c(y2-food.ySpawnOffset()));
+            food.home = this;
+            getWorld().removeObject(ing);
+            return true;
         }
         return false;
     }
+    if (food != null) {
+        if (food.addIngredient(ing)) {
+            getWorld().removeObject(ing);
+            return true;
+        }
+    }
+    return false;
+}
     
-    // освобождение тарелки
     public boolean makeFree() {
         if (food != null) {
             food.home = null;
@@ -74,4 +88,21 @@ public class Plate extends Container
         }
         return false;
     }
+    
+    public void returnIngredient(Ingredient ing) {
+        if (food != null) {
+            int centerX = x1 + (x2 - x1) / 2;
+            ing.setLocation(c(centerX), c(y2 - food.ySpawnOffset()));
+        }
+    }
+    
+    public void removeIngredient(Ingredient ing) {
+        if (food != null) {
+            food.removeIngredient(ing);
+        }
+    }
+    
+    public Food getFood() {
+    return food;
+}
 }

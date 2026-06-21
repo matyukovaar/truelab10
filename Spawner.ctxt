@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Spawner
+comment1.params=type\ imageName
+comment1.target=Spawner(java.lang.String,\ java.lang.String)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=
+comment3.target=void\ spawnIngredient()
+comment4.params=
+comment4.target=Ingredient\ createIngredient()
+comment5.params=x
+comment5.target=int\ c(int)
+numComments=6
