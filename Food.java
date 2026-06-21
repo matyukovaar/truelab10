@@ -2,21 +2,23 @@ import greenfoot.*;
 
 public abstract class Food extends Ingredient {
     public Container home;
-    
+
     public abstract int ySpawnOffset();
+
     public abstract boolean addIngredient(Ingredient ing);
+
     public abstract void removeIngredient(Ingredient ing);
-    
+
     public void act() {
         mouseControl();
     }
-    
+
     private void mouseControl() {
         if (Greenfoot.mousePressed(this)) {
             dragging = true;
             startX = getX();
             startY = getY();
-            
+
             if (home != null && home instanceof Plate) {
                 ((Plate) home).food = null;
             }
@@ -32,11 +34,26 @@ public abstract class Food extends Ingredient {
             checkDrop();
         }
     }
-    
+
     protected void checkDrop() {
         MouseInfo mouse = Greenfoot.getMouseInfo();
         if (mouse == null) return;
-        
+
+        Client client = getClientAtMouse();
+        if (client != null) {
+            boolean accepted = client.receiveFood(this);
+            if (accepted) {
+                if (home != null && home instanceof Plate) {
+                    ((Plate) home).makeFree();
+                }
+                if (getWorld() != null) {
+                    getWorld().removeObject(this);
+                }
+                return;
+            }
+
+        }
+
         Plate plate = getContainerAtMouse(Plate.class);
         if (plate != null && plate.isEmpty()) {
             plate.food = this;
@@ -45,7 +62,7 @@ public abstract class Food extends Ingredient {
             setLocation(c(centerX), c(plate.y2 - ySpawnOffset()));
             return;
         }
-        
+
         Trash trash = getContainerAtMouse(Trash.class);
         if (trash != null) {
             if (home != null && home instanceof Plate) {
@@ -54,7 +71,7 @@ public abstract class Food extends Ingredient {
             getWorld().removeObject(this);
             return;
         }
-        
+
         if (home != null && home instanceof Plate) {
             Plate oldPlate = (Plate) home;
             oldPlate.food = this;
@@ -63,5 +80,17 @@ public abstract class Food extends Ingredient {
         } else {
             getWorld().removeObject(this);
         }
+    }
+
+    private Client getClientAtMouse() {
+        if (getWorld() == null) return null;
+
+        MouseInfo mouse = Greenfoot.getMouseInfo();
+        if (mouse == null) return null;
+
+        for (Actor actor : getIntersectingObjects(Client.class)) {
+            return (Client) actor;
+        }
+        return null;
     }
 }

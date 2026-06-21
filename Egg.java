@@ -13,6 +13,9 @@ public class Egg extends Ingredient {
     }
     
     public void act() {
+         if(GameManager.isPaused) {
+            return;
+        }
         // Обновляем картинку если на сковороде
         if (isPlaced() && getHomeContainer() instanceof Pan) {
             Pan pan = (Pan) getHomeContainer();

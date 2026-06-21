@@ -12,8 +12,12 @@ public class Pan extends Container {
     }
     
     public void act() {
+         if(GameManager.isPaused) {
+            return;
+        }
         updateCooking();
         updateImage();
+        
     }
     
     private void updateCooking() {

@@ -13,6 +13,9 @@ public class Cutlet extends Ingredient {
     }
     
     public void act() {
+         if(GameManager.isPaused) {
+            return;
+        }
         if (isPlaced() && getHomeContainer() instanceof Pan) {
             Pan pan = (Pan) getHomeContainer();
             int state = pan.getCookingState();
