@@ -22,7 +22,7 @@ public abstract class Food extends Ingredient {
                 ((Plate) home).makeFree();
             }
     }
-    private void mouseControl() {
+    public void mouseControl() {
         if (Greenfoot.mousePressed(this)) {
             dragging = true;
             startX = getX();
@@ -34,10 +34,10 @@ public abstract class Food extends Ingredient {
                 setLocation(mouse.getX(), mouse.getY() - getImage().getHeight()/2 + 15);
             }
         }
-        // --------------- ЧТО КАКИМ ВООБЩЕ ОБРАЗОМ КОГДА ТУТ NULL   В   ВМЕСТО 
-        // THIS НАЧИНАЕТ ПРОИСХОДИТЬ МЯСО ЧЕГО 
+        // ==============================
+        // очень опасная часть!!!!!!!!!!!!!!!!!! null или this
         if (Greenfoot.mouseClicked(this)) {
-            System.out.println("ПРОШЕЛ ПИЗДЕЦ");
+            //System.out.println("Отпустили!"+Greenfoot.getRandomNumber(100));
             dragging = false;
             checkDrop();
         }

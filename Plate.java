@@ -31,11 +31,10 @@ public class Plate extends Container {
     }
     
     public boolean addIngredient(Ingredient ing) {
-        System.out.println("тарелка чек"+id);
-        if (food == null) {
-            System.out.println("тарелка пуста");
+        if (isEmpty()) {
             if (ing instanceof Food) {
                 if (((Food)(ing)).home != null && ((Food)(ing)).home instanceof Plate) {
+                    // makefree
                     ((Plate)(((Food)(ing)).home)).food = null;
                 }
                 ((Food)(ing)).home = this;
@@ -77,13 +76,12 @@ public class Plate extends Container {
             return false;
         }
         // если не пуста
-        System.out.println("жопа");
         if (food.addIngredient(ing)) {
-                getWorld().removeObject(ing);
-                return true;
+            getWorld().removeObject(ing);
+            return true;
         }
         return false;
-}
+    }
     
     public boolean makeFree() {
         if (food != null) {
@@ -95,17 +93,18 @@ public class Plate extends Container {
     }
     
     public void returnIngredient(Ingredient ing) {
+        //System.out.println(""+food.ySpawnOffset());
         if (food != null) {
             int centerX = x1 + (x2 - x1) / 2;
             ing.setLocation(c(centerX), c(y2 - food.ySpawnOffset()));
         }
     }
     
-    public void removeIngredient(Ingredient ing) {
-        if (food != null) {
-            food.removeIngredient(ing);
-        }
-    }
+    // public void removeIngredient(Ingredient ing) {
+        // if (food != null) {
+            // food.removeIngredient(ing);
+        // }
+    // }
     
     public Food getFood() {
     return food;

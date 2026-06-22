@@ -8,6 +8,11 @@ public class Egg extends cookableIngredient {
         burntPicture = "egg3.png";
         size = 85;
         sizeY = 50;
+        timeForReady = 80;
+        timeForBurn = 300;
+        yoff = 30;
+        
+        
         picture = rawPicture;
         setPicture();
     }

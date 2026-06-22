@@ -8,8 +8,7 @@ public abstract class Ingredient extends Actor {
     boolean dragging = false;
     int startX;
     int startY;
-    private Container homeContainer;
-    private boolean isPlaced = false;
+    protected boolean isPlaced = false;
     
     protected void setPicture(String fileName) {
         picture = fileName;
@@ -32,23 +31,9 @@ public abstract class Ingredient extends Actor {
     public String getPicture() {
         return picture;
     }
-    
-    public void setHomeContainer(Container container) {
-        this.homeContainer = container;
-        this.isPlaced = true;
-    }
-    
-    public Container getHomeContainer() {
-        return homeContainer;
-    }
-    
+
     public boolean isPlaced() {
         return isPlaced;
-    }
-    
-    public void resetPlaced() {
-        isPlaced = false;
-        homeContainer = null;
     }
     
     protected void checkDrop() {
@@ -59,7 +44,7 @@ public abstract class Ingredient extends Actor {
         
         Trash trash = getContainerAtMouse(Trash.class);
         if (trash != null) {
-            removeFromContainer();
+            // removeFromContainer();
             if (getWorld() != null) {
                 getWorld().removeObject(this);
             }
@@ -68,7 +53,9 @@ public abstract class Ingredient extends Actor {
         
         Pan pan = getContainerAtMouse(Pan.class);
         if (pan != null && pan.isEmpty()) {
-            if (pan.addIngredient(this)) {
+            System.out.println("11111");
+            if (pan.addCookable(this)) {
+                isPlaced = true;
                 return;
             }
         }
@@ -87,44 +74,12 @@ public abstract class Ingredient extends Actor {
             }
         }
     
-        
-        if (isPlaced) {
-            returnToHome();
-        } else {
-            if (getWorld() != null) {
+        // удаление объекта если не попали, за возвращением следят сами Food и cookedIngredient
+        if (getWorld() != null) {
                 getWorld().removeObject(this);
-            }
         }
     }
-    
-    private void returnToHome() {
-        if (homeContainer != null) {
-            if (homeContainer instanceof Plate) {
-                Plate plate = (Plate) homeContainer;
-                plate.returnIngredient(this);
-            } else if (homeContainer instanceof Pan) {
-                Pan pan = (Pan) homeContainer;
-                pan.returnIngredient(this);
-            } else if (homeContainer instanceof DrinkStation) {
-                DrinkStation station = (DrinkStation) homeContainer;
-                station.returnIngredient(this);
-            }
-        }
-        resetPlaced();
-    }
-    
-    private void removeFromContainer() {
-        if (homeContainer != null) {
-            if (homeContainer instanceof Plate) {
-                ((Plate) homeContainer).removeIngredient(this);
-            } else if (homeContainer instanceof Pan) {
-                ((Pan) homeContainer).removeIngredient(this);
-            } else if (homeContainer instanceof DrinkStation) {
-                ((DrinkStation) homeContainer).removeIngredient(this);
-            }
-        }
-    }
-    
+
     // проверка на попытку положить в контейнер - должен пересекать + мышь именно на контейнере
     public <T extends Actor> T getContainerAtMouse(Class<T> type) {
         if (getWorld() == null) return null;

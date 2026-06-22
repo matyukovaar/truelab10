@@ -40,6 +40,7 @@ public class DrinkStation extends Container {
         }
     }
     
+    
     private void updateImage() {
         GreenfootImage photo = new GreenfootImage(c(x2 - x1), c(y2 - y1));
         
@@ -55,23 +56,22 @@ public class DrinkStation extends Container {
             photo.fill();
             setImage(photo);
         }
-    }
+        }
     
     public boolean isEmpty() {
-        return cup == null;
-    }
-    
+            return cup == null;
+        }    
     public boolean addIngredient(Ingredient ing) {
-        if (ing instanceof Cup && isEmpty()) {
-            cup = (Cup) ing;
-            state = 1;
-            cookingTime = 0;
-            ing.setHomeContainer(this);
-            
-            int centerX = x1 + (x2 - x1) / 2;
-            int centerY = y1 + (y2 - y1) / 2;
-            ing.setLocation(c(centerX), c(centerY));
-            return true;
+    if (ing instanceof Cup && isEmpty()) {
+        cup = (Cup) ing;
+        state = 1;
+        cookingTime = 0;
+        ((Cup)(ing)).setHomeContainer(this);
+        
+        int centerX = x1 + (x2 - x1) / 2;
+        int centerY = y1 + (y2 - y1) / 2;
+        ing.setLocation(c(centerX), c(centerY));
+        return true;
         }
         return false;
     }

@@ -1,10 +1,13 @@
 import greenfoot.*;
 
 public class Cup extends Ingredient {
+    protected Container homeContainer;
+    
     public Cup() {
         size = 50;
         sizeY = 70;
         setPicture("cup.png");
+        
     }
     
     public void act() {
@@ -12,7 +15,13 @@ public class Cup extends Ingredient {
             mouseControl();
         }
     }
-    
+    public void setHomeContainer(Container container) {
+        this.homeContainer = container;
+        this.isPlaced = true;
+    }
+    public Container getHomeContainer() {
+        return homeContainer;
+    }    
     private void mouseControl() {
         if (isPlaced() && getHomeContainer() instanceof DrinkStation) {
             DrinkStation station = (DrinkStation) getHomeContainer();

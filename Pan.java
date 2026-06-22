@@ -1,110 +1,78 @@
 import greenfoot.*;
 
 public class Pan extends Container {
-    private Ingredient cookingItem;
-    private int cookingState = 0;
-    private int cookingTime = 0;
-    private static final int COOKED_TIME = 600;
-    private static final int BURNT_TIME = 1200;
+    cookableIngredient cooking = null;
     
-    public Pan(int x1, int x2, int y1, int y2) {
-        super(x1, x2, y1, y2);
-    }
+    //int id = Greenfoot.getRandomNumber(555);
     
     public void act() {
-         if(GameManager.isPaused) {
-            return;
-        }
-        updateCooking();
-        updateImage();
-        
-    }
-    
-    private void updateCooking() {
-        if (cookingItem != null && (cookingState == 1 || cookingState == 2)) {
-            cookingTime++;
-            if (cookingTime >= BURNT_TIME) {
-                cookingState = 3;
-            } else if (cookingTime >= COOKED_TIME && cookingState == 1) {
-                cookingState = 2;
-            }
-        }
-    }
-    
-    private void updateImage() {
-        GreenfootImage photo = new GreenfootImage(c(x2 - x1), c(y2 - y1));
-        
         // отладочно
         if (TESTZONES) {
-            if (cookingState == 0) {
-                photo.setColor(new Color(0, 255, 0, 100));
-            } else if (cookingState == 1) {
-                photo.setColor(new Color(255, 165, 0, 150));
-            } else if (cookingState == 2) {
-                photo.setColor(new Color(0, 255, 0, 200));
-            } else if (cookingState == 3) {
-                photo.setColor(new Color(50, 50, 50, 200));
+            if (isEmpty()) {
+                GreenfootImage photo = getImage();
+                photo.setColor(new Color(0, 255, 0, 100)); 
+                photo.fill();
+                setImage(photo);
+                }
+            else {
+                GreenfootImage photo = getImage();
+                photo.setColor(new Color(255, 0, 0, 100)); 
+                photo.fill();
+                setImage(photo);
             }
-            photo.fill();
-            setImage(photo);
         }
+        // если не пусто = жарить
+        if (!isEmpty()) {
+            cooking.cook();
+        }
+    }
+    
+    public Pan(int x1, int x2, int y1, int y2) {
+        super(x1, x2, y1, y2); 
     }
     
     public boolean isEmpty() {
-        return cookingItem == null;
+        if (cooking  == null) return true;
+        return false;
     }
     
-    public boolean addIngredient(Ingredient ing) {
-        if ((ing instanceof Egg || ing instanceof Cutlet) && isEmpty()) {
-            cookingItem = ing;
-            cookingState = 1;
-            cookingTime = 0;
-            ing.setHomeContainer(this);
-            
-            int centerX = x1 + (x2 - x1) / 2;
-            int centerY = y1 + (y2 - y1) / 2;
-            ing.setLocation(c(centerX), c(centerY));
+    public boolean addCookable(Ingredient ing) {
+        if (isEmpty()) {
+            // если сковорода пуста то добавить туда котлетко или яйцо
+            if (ing instanceof cookableIngredient) {
+                // берем ингредиент и запоминаем его
+                cooking = (cookableIngredient)ing;
+                // если где-то лежало = теперь не лежит
+                if (cooking.pan != null) {
+                    ((Pan)(cooking.pan)).makeFree();
+                }
+                // и говорим что мы его дом
+                cooking.pan = this;
+                
+                int centerX = x1 + (x2 - x1) / 2;
+                cooking.setLocation(c(centerX), c(y2-cooking.ySpawnOffset()));
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean makeFree() {
+        if (cooking != null) {
+            cooking.pan = null;
+            cooking  = null;
             return true;
         }
         return false;
     }
     
     public void returnIngredient(Ingredient ing) {
-        if (cookingItem == ing) {
+        if (cooking != null) {
             int centerX = x1 + (x2 - x1) / 2;
-            int centerY = y1 + (y2 - y1) / 2;
-            ing.setLocation(c(centerX), c(centerY));
+            ing.setLocation(c(centerX), c(y2 - cooking.ySpawnOffset()));
         }
     }
     
-    public void removeIngredient(Ingredient ing) {
-        if (cookingItem == ing) {
-            cookingItem = null;
-            cookingState = 0;
-            cookingTime = 0;
-        }
-    }
-    
-    public boolean makeFree() {
-        cookingItem = null;
-        cookingState = 0;
-        cookingTime = 0;
-        return true;
-    }
-    
-    public boolean isCooked() {
-        return cookingState == 2;
-    }
-    
-    public boolean isBurnt() {
-        return cookingState == 3;
-    }
-    
-    public int getCookingState() {
-        return cookingState;
-    }
-    
-    public Ingredient getCookingItem() {
-        return cookingItem;
+    public cookableIngredient getFood() {
+        return cooking;
     }
 }
