@@ -8,7 +8,6 @@ public abstract class Ingredient extends Actor {
     boolean dragging = false;
     int startX;
     int startY;
-    private IngredientZone homeZone;
     private Container homeContainer;
     private boolean isPlaced = false;
     
@@ -32,10 +31,6 @@ public abstract class Ingredient extends Actor {
     
     public String getPicture() {
         return picture;
-    }
-    
-    public void setHomeZone(IngredientZone zone) {
-        this.homeZone = zone;
     }
     
     public void setHomeContainer(Container container) {
@@ -91,6 +86,7 @@ public abstract class Ingredient extends Actor {
                 return;
             }
         }
+    
         
         if (isPlaced) {
             returnToHome();

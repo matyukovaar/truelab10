@@ -2,7 +2,12 @@ import greenfoot.*;
 
 public abstract class Food extends Ingredient {
     public Container home;
-
+    
+    public Food() {
+        //отладочное
+        //setRotation(Greenfoot.getRandomNumber(360));
+    }
+    
     public abstract int ySpawnOffset();
 
     public abstract boolean addIngredient(Ingredient ing);

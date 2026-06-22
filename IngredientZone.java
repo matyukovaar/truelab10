@@ -31,7 +31,6 @@ public class IngredientZone extends Actor {
         System.out.println("SPAWNED"+Greenfoot.getRandomNumber(100));
         Ingredient ing = createIngredient();
         if (ing != null) {
-            ing.setHomeZone(this);
             ing.dragging = true;
             getWorld().addObject(ing, getX(), getY());
         }
