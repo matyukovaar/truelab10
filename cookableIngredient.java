@@ -93,7 +93,7 @@ public class cookableIngredient extends Ingredient {
                 setLocation(mouse.getX(), mouse.getY() - getImage().getHeight()/2 + 15);
             }
         }
-        if (Greenfoot.mouseDragEnded(this)) {
+        if (Greenfoot.mouseClicked(this)) {
             dragging = false;
             checkDrop();
         }

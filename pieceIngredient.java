@@ -7,6 +7,8 @@ public class pieceIngredient extends Ingredient
     }
     
     public void act() {
+        if (dragging) System.out.println("DADADADA"+Greenfoot.getRandomNumber(100));
+        else System.out.println("-");
         mouseControl();
     }
     
@@ -24,7 +26,11 @@ public class pieceIngredient extends Ingredient
                 setLocation(mouse.getX(), mouse.getY() - getImage().getHeight()/2 + 15);
             }
         }
-        if (Greenfoot.mouseDragEnded(this)) {
+        // именно маус клик позволяет отслеживать отпускание мыши, метод stop drag
+        // чето там сначала ждет НАЖАТИЯ, а его у нас нет тк предмет сразу
+        // создается и следуетза мышкой
+        if (Greenfoot.mouseClicked(null)) {
+            //System.out.println("Отпустили!"+Greenfoot.getRandomNumber(100));
             dragging = false;
             checkDrop();
         }

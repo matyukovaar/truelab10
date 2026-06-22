@@ -2,18 +2,18 @@ import greenfoot.*;
 
 public class IngredientZone extends Actor {
     double COEF = Kuhnya.COEF;
-    // неизменный ингредиент тайп для зоны
+    // неизменный тип ингредиента для зоны
     private String ingredientType;
     private GreenfootImage zoneImage;
     
     public IngredientZone(String type, String imageName, int width, int height) {
     this.ingredientType = type;
     zoneImage = new GreenfootImage(c(width), c(height));
-    zoneImage.setColor(new Color(0, 0, 0, 0));
+    zoneImage.setColor(new Color(255, 0, 0, 0));
     zoneImage.fill();
     
     setImage(zoneImage);
-}
+    }
     
     public void act() {
         if (Greenfoot.mousePressed(this)) {
@@ -23,9 +23,11 @@ public class IngredientZone extends Actor {
     
     // реальное создание ингредиента
     private void spawnIngredient() {
+        System.out.println("SPAWNED"+Greenfoot.getRandomNumber(100));
         Ingredient ing = createIngredient();
         if (ing != null) {
             ing.setHomeZone(this);
+            ing.dragging = true;
             getWorld().addObject(ing, getX(), getY());
         }
     }

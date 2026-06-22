@@ -22,6 +22,8 @@ public abstract class Ingredient extends Actor {
         image.scale(c(size), c(sizeY));
         setImage(image);
     }
+    
+    // этот акт Арины не будет использоваться так как перезаписан в детях
     public void act() {
         if(GameManager.isPaused){
             return;
