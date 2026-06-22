@@ -17,16 +17,16 @@ public abstract class Food extends Ingredient {
     public void act() {
         mouseControl();
     }
-
+    protected void makeHomeFree() {
+        if (home != null && home instanceof Plate) {
+                ((Plate) home).makeFree();
+            }
+    }
     private void mouseControl() {
         if (Greenfoot.mousePressed(this)) {
             dragging = true;
             startX = getX();
             startY = getY();
-
-            if (home != null && home instanceof Plate) {
-                ((Plate) home).food = null;
-            }
         }
         if (dragging) {
             MouseInfo mouse = Greenfoot.getMouseInfo();
@@ -34,7 +34,10 @@ public abstract class Food extends Ingredient {
                 setLocation(mouse.getX(), mouse.getY() - getImage().getHeight()/2 + 15);
             }
         }
-        if (Greenfoot.mouseClicked(null)) {
+        // --------------- ЧТО КАКИМ ВООБЩЕ ОБРАЗОМ КОГДА ТУТ NULL   В   ВМЕСТО 
+        // THIS НАЧИНАЕТ ПРОИСХОДИТЬ МЯСО ЧЕГО 
+        if (Greenfoot.mouseClicked(this)) {
+            System.out.println("ПРОШЕЛ ПИЗДЕЦ");
             dragging = false;
             checkDrop();
         }
@@ -61,10 +64,12 @@ public abstract class Food extends Ingredient {
 
         Plate plate = getContainerAtMouse(Plate.class);
         if (plate != null && plate.isEmpty()) {
+            makeHomeFree();
             plate.food = this;
             this.home = plate;
             int centerX = plate.x1 + (plate.x2 - plate.x1) / 2;
             setLocation(c(centerX), c(plate.y2 - ySpawnOffset()));
+            
             return;
         }
 

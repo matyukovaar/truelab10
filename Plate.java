@@ -1,8 +1,8 @@
 import greenfoot.*;
 
 public class Plate extends Container {
-    Food food;
-    
+    Food food = null;
+    int id = Greenfoot.getRandomNumber(555);
     public void act() {
         // отладочно
         if (TESTZONES) {
@@ -31,56 +31,58 @@ public class Plate extends Container {
     }
     
     public boolean addIngredient(Ingredient ing) {
-    if (isEmpty()) {
-        if (ing instanceof Food) {
-            if (((Food)(ing)).home != null && ((Food)(ing)).home instanceof Plate) {
-                ((Plate)(((Food)(ing)).home)).food = null;
+        System.out.println("тарелка чек"+id);
+        if (food == null) {
+            System.out.println("тарелка пуста");
+            if (ing instanceof Food) {
+                if (((Food)(ing)).home != null && ((Food)(ing)).home instanceof Plate) {
+                    ((Plate)(((Food)(ing)).home)).food = null;
+                }
+                ((Food)(ing)).home = this;
+                food = (Food)ing;
+                int centerX = x1 + (x2 - x1) / 2;
+                food.setLocation(c(centerX), c(y2-food.ySpawnOffset()));
+                return true;
             }
-            ((Food)(ing)).home = this;
-            food = (Food)ing;
-            int centerX = x1 + (x2 - x1) / 2;
-            food.setLocation(c(centerX), c(y2-food.ySpawnOffset()));
-            return true;
+            // Хлеб = Sandwich
+            if (ing instanceof Bread) {
+                food = new Sandwich();
+                food.addIngredient(ing);
+                int centerX = x1 + (x2 - x1) / 2;
+                getWorld().addObject(food, c(centerX), c(y2-food.ySpawnOffset()));
+                food.home = this;
+                getWorld().removeObject(ing);
+                return true;
+            }
+            // Рис = RiceDish
+            if (ing instanceof Rice) {
+                food = new RiceDish();
+                food.addIngredient(ing);
+                int centerX = x1 + (x2 - x1) / 2;
+                getWorld().addObject(food, c(centerX), c(y2-food.ySpawnOffset()));
+                food.home = this;
+                getWorld().removeObject(ing);
+                return true;
+            }
+            // Пюре = MashedDish
+            if (ing instanceof MashedPotatoes) {
+                food = new MashedDish();
+                food.addIngredient(ing);
+                int centerX = x1 + (x2 - x1) / 2;
+                getWorld().addObject(food, c(centerX), c(y2-food.ySpawnOffset()));
+                food.home = this;
+                getWorld().removeObject(ing);
+                return true;
+            }
+            return false;
         }
-        // Хлеб = Sandwich
-        if (ing instanceof Bread) {
-            food = new Sandwich();
-            food.addIngredient(ing);
-            int centerX = x1 + (x2 - x1) / 2;
-            getWorld().addObject(food, c(centerX), c(y2-food.ySpawnOffset()));
-            food.home = this;
-            getWorld().removeObject(ing);
-            return true;
-        }
-        // Рис = RiceDish
-        if (ing instanceof Rice) {
-            food = new RiceDish();
-            food.addIngredient(ing);
-            int centerX = x1 + (x2 - x1) / 2;
-            getWorld().addObject(food, c(centerX), c(y2-food.ySpawnOffset()));
-            food.home = this;
-            getWorld().removeObject(ing);
-            return true;
-        }
-        // Пюре = MashedDish
-        if (ing instanceof MashedPotatoes) {
-            food = new MashedDish();
-            food.addIngredient(ing);
-            int centerX = x1 + (x2 - x1) / 2;
-            getWorld().addObject(food, c(centerX), c(y2-food.ySpawnOffset()));
-            food.home = this;
-            getWorld().removeObject(ing);
-            return true;
+        // если не пуста
+        System.out.println("жопа");
+        if (food.addIngredient(ing)) {
+                getWorld().removeObject(ing);
+                return true;
         }
         return false;
-    }
-    if (food != null) {
-        if (food.addIngredient(ing)) {
-            getWorld().removeObject(ing);
-            return true;
-        }
-    }
-    return false;
 }
     
     public boolean makeFree() {

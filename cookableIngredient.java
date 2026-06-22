@@ -44,7 +44,7 @@ public class cookableIngredient extends Ingredient {
                     setLocation(mouse.getX(), mouse.getY() - getImage().getHeight()/2 + 15);
                 }
             }
-            if (Greenfoot.mouseClicked(null)) {
+            if (Greenfoot.mouseClicked(this)) {
                 dragging = false;
                 MouseInfo mouse = Greenfoot.getMouseInfo();
                 if (mouse != null) {
