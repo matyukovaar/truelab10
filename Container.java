@@ -18,6 +18,9 @@ public abstract class Container extends Actor
     }
     public void act()
     {
+        if(GameManager.isPaused) {
+            return;
+        }
     }
     // Задается зона (прозрачная)
     public void setZone(int x1, int x2, int y1, int y2) {

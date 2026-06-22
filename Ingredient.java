@@ -22,6 +22,11 @@ public abstract class Ingredient extends Actor {
         image.scale(c(size), c(sizeY));
         setImage(image);
     }
+    public void act() {
+        if(GameManager.isPaused){
+            return;
+        }
+    }
     
     public String getPicture() {
         return picture;

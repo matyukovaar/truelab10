@@ -71,6 +71,8 @@ public class Kuhnya extends World {
     private void prepare() {
         setZones();
         setIngredientZones();
+        addObject(new PauseButton(), getWidth() - 80, 30); 
+        addObject(new GameManager(), 0, 0);
     }
     
     private int c(int x) {
