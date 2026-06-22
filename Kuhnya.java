@@ -1,8 +1,8 @@
 import greenfoot.*;
 
 public class Kuhnya extends World {
-    public static final double COEF = 0.5;
-    public static final boolean TESTZONES = true;
+    public static final double COEF = 1;
+    public static final boolean TESTZONES = false;
     
     private static final int WIDTH = (int)(1600 * COEF);
     private static final int HEIGHT = (int)(800 * COEF);
@@ -72,7 +72,7 @@ public class Kuhnya extends World {
         setZones();
         setIngredientZones();
         addObject(new PauseButton(), getWidth() - 80, 30); 
-        //addObject(new GameManager(), 0, 0);
+        addObject(new GameManager(), 0, 0);
     }
     
     private int c(int x) {

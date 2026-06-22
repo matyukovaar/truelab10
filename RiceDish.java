@@ -7,7 +7,7 @@ public class RiceDish extends Food {
     public RiceDish() {
         ing1 = null;
         ing2 = null;
-        size = 160;
+        size = 100;
         sizeY = size;
         updateImage();
     }

@@ -3,7 +3,7 @@ import greenfoot.*;
 public class Menu extends World {
      //========================ОТЛАДКА=============================
     // коэф от базового размера 
-    public static final double COEF = 0.5;
+    static double COEF = (Kuhnya.COEF);
     // тесты
     public static final boolean TESTZONES = true;
     //============================================================
@@ -23,12 +23,12 @@ public class Menu extends World {
         int centerX = getWidth() / 2; 
         
         MenuButton playButton = new MenuButton("ИГРАТЬ");
-        addObject(playButton, centerX, 150);
+        addObject(playButton, centerX, (int)(COEF*300));
         
         MenuButton helpButton = new MenuButton("ИНСТРУКЦИЯ");
-        addObject(helpButton, centerX, 220);
+        addObject(helpButton, centerX, (int)(COEF*440));
         
         MenuButton exitButton = new MenuButton("ВЫХОД");
-        addObject(exitButton, centerX, 290);
+        addObject(exitButton, centerX, (int)(580*COEF));
     }
 }
