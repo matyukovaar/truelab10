@@ -2,8 +2,4 @@
 comment0.target=Egg
 comment1.params=
 comment1.target=Egg()
-comment2.params=
-comment2.target=void\ act()
-comment3.params=
-comment3.target=void\ mouseControl()
-numComments=4
+numComments=2

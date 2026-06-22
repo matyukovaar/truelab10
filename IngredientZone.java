@@ -2,6 +2,7 @@ import greenfoot.*;
 
 public class IngredientZone extends Actor {
     double COEF = Kuhnya.COEF;
+    // неизменный ингредиент тайп для зоны
     private String ingredientType;
     private GreenfootImage zoneImage;
     
@@ -20,6 +21,7 @@ public class IngredientZone extends Actor {
         }
     }
     
+    // реальное создание ингредиента
     private void spawnIngredient() {
         Ingredient ing = createIngredient();
         if (ing != null) {
@@ -28,6 +30,7 @@ public class IngredientZone extends Actor {
         }
     }
     
+    // создание ингредиента именно new
     private Ingredient createIngredient() {
         switch(ingredientType) {
             case "bread": return new Bread();
@@ -41,11 +44,11 @@ public class IngredientZone extends Actor {
             default: return null;
         }
     }
-    
+    //пиксельное смещение
     public int c(int x) {
         return (int)(x * COEF);
     }
-    
+    // возврат типо ингредиента который спавнится в этой зоне
     public String getType() {
         return ingredientType;
     }

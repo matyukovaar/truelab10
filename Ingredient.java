@@ -122,6 +122,7 @@ public abstract class Ingredient extends Actor {
         }
     }
     
+    // проверка на попытку положить в контейнер - должен пересекать + мышь именно на контейнере
     public <T extends Actor> T getContainerAtMouse(Class<T> type) {
         if (getWorld() == null) return null;
         
@@ -142,6 +143,7 @@ public abstract class Ingredient extends Actor {
         return null;
     }
     
+    // перевод пиксельных координат в человеческие
     public int c(int x) {
         return (int)(x * COEF);
     }
