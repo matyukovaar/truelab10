@@ -3,16 +3,7 @@ import greenfoot.*;
 public class pieceIngredient extends Ingredient 
 {
     // также не уверен что нужно
-    public pieceIngredient () {
-    }
-    
-    public void act() {
-        if (dragging) System.out.println("DADADADA"+Greenfoot.getRandomNumber(100));
-        else {System.out.println("-");}
-        mouseControl();
-    }
-    
-    private void mouseControl() {
+    protected void mouseControl() {
         if (isPlaced()) return;
         
         if (Greenfoot.mousePressed(this)) {

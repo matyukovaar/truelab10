@@ -4,6 +4,7 @@ public class Plate extends Container {
     Food food = null;
     int id = Greenfoot.getRandomNumber(555);
     public void act() {
+        if(GameManager.isPaused) return;
         // отладочно
         if (TESTZONES) {
             if (isEmpty()) {

@@ -6,6 +6,7 @@ public class Pan extends Container {
     //int id = Greenfoot.getRandomNumber(555);
     
     public void act() {
+        if(GameManager.isPaused) return;
         // отладочно
         if (TESTZONES) {
             if (isEmpty()) {

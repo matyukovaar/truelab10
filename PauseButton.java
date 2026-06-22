@@ -1,6 +1,7 @@
 import greenfoot.*;
 
 public class PauseButton extends Actor {
+    static double COEF = (Kuhnya.COEF);
 
     public PauseButton() {
         updateButtonImage("||");
@@ -21,17 +22,17 @@ public class PauseButton extends Actor {
     }
 
     private void updateButtonImage(String text) {
-        GreenfootImage img = new GreenfootImage(40, 40);
+        GreenfootImage img = new GreenfootImage((int)(COEF * 80), (int)(COEF * 80));
         img.setColor(new Color(255, 218, 185)); 
         img.fill();
         img.setColor(Color.BLACK);
-        img.drawRect(0, 0, 39, 39);
+        img.drawRect(0, 0, (int)(COEF * 78), (int)(COEF * 78));
 
-        Font buttonFont = new Font("Arial", true, false, 22);
+        Font buttonFont = new Font("Arial", true, false, (int)(COEF * 44));
         img.setFont(buttonFont);
 
         java.awt.Graphics graphics = img.getAwtImage().getGraphics();
-        graphics.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 22));
+        graphics.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, (int)(COEF * 44)));
         java.awt.FontMetrics metrics = graphics.getFontMetrics();
 
         int textX = (img.getWidth() - metrics.stringWidth(text)) / 2;
@@ -40,5 +41,4 @@ public class PauseButton extends Actor {
         img.drawString(text, textX, textY);
         setImage(img);    
     }
-
 }

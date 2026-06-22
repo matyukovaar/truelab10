@@ -9,12 +9,6 @@ public class Cup extends Ingredient {
         setPicture("cup.png");
         
     }
-    
-    public void act() {
-        if (getWorld() != null) {
-            mouseControl();
-        }
-    }
     public void setHomeContainer(Container container) {
         this.homeContainer = container;
         this.isPlaced = true;
@@ -22,7 +16,7 @@ public class Cup extends Ingredient {
     public Container getHomeContainer() {
         return homeContainer;
     }    
-    private void mouseControl() {
+    protected void mouseControl() {
         if (isPlaced() && getHomeContainer() instanceof DrinkStation) {
             DrinkStation station = (DrinkStation) getHomeContainer();
             int state = station.getState();

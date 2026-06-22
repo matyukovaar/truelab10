@@ -22,6 +22,7 @@ public class DrinkStation extends Container {
     }
     
     public void act() {
+        if(GameManager.isPaused) return;
         if (getWorld() != null) {
             updateCooking();
             updateImage();

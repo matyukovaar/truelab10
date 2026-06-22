@@ -8,15 +8,25 @@ public class GameManager extends Actor {
     private int timeLeft = 5400;
     private boolean levelEnded = false;
 
+    private SpawnClient spawner;
+    
+    public SpawnClient getSpawner() {
+        return spawner;
+    }
+    
+    
     public GameManager() {
         getImage().clear();
         isPaused = false;
     }
-
+    
+    
     protected void addedToWorld(World world) {
  
         if (world.getObjects(SpawnClient.class).isEmpty()) {
-            world.addObject(new SpawnClient(), world.getWidth() / 2, 0);
+            SpawnClient newspawner = new SpawnClient();
+            spawner = newspawner;
+            world.addObject(newspawner , world.getWidth() / 2, 0);
         }
     }
 

@@ -21,6 +21,11 @@ public class Sandwich extends Food {
         ingredientPictures.put(type, picture);
     }
     
+    // получение списка ингредиентов
+    public List<Ingredient> getIngredients() {
+    return new ArrayList<>(ingredients); 
+    }
+    
     public boolean addIngredient(Ingredient ing) {
         // проверка макс размера
         // if (ingredients.size() > 3) {

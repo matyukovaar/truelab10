@@ -1,4 +1,6 @@
 import greenfoot.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class RiceDish extends Food {
     private Ingredient ing1, ing2;
@@ -28,6 +30,13 @@ public class RiceDish extends Food {
             return true;
         }
         return false;
+    }
+    
+    public List<Ingredient> getIngredients() {
+        List<Ingredient> list = new ArrayList<>();
+        if (ing1 != null) list.add(ing1);
+        if (ing2 != null) list.add(ing2);
+    return list;
     }
     
     public void removeIngredient(Ingredient ing) {

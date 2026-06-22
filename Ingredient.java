@@ -14,7 +14,7 @@ public abstract class Ingredient extends Actor {
         picture = fileName;
         setPicture();
     }
-    
+    protected abstract void mouseControl();
     protected void setPicture() {
         GreenfootImage image = new GreenfootImage(picture);
         image.scale(c(size), c(sizeY));
@@ -23,9 +23,8 @@ public abstract class Ingredient extends Actor {
     
     // этот акт Арины не будет использоваться так как перезаписан в детях
     public void act() {
-        if(GameManager.isPaused){
-            return;
-        }
+        if(GameManager.isPaused) return;
+        mouseControl();
     }
     
     public String getPicture() {

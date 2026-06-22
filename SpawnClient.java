@@ -3,14 +3,32 @@ import java.util.List;
 
 
 public class SpawnClient extends Actor {
+    
+    static double COEF = Kuhnya.COEF;
+    static int slotAmount = 6;
+    
+    
     private int spawnTimer = 0;
-    private int spawnInterval = 300; 
-
-    private int[] slotX = {200, 400, 600, 800};
-    private int[] slotY = {180, 180, 180, 180};
-
+    // +- 6 секунд, то есть 60*6=360 и дальше рандом
+    private int baseInterval = 60; 
+    private int realInterval = getInterval(60);
+    
+    int slotY = (int)(COEF*360);
+    private boolean[] slots = new boolean[slotAmount];
+    
+    public void freeSlot(int num) {
+        slots[num] = true;
+    }
+    
+    private int getInterval(int r) {
+        return  baseInterval - r + Greenfoot.getRandomNumber(r*2);
+    }
+    
     public SpawnClient() {
         getImage().clear(); 
+        for (int i = 0; i < slotAmount; i++) {
+            slots[i] = true;
+        }
     }
 
     public void act() {
@@ -22,34 +40,21 @@ public class SpawnClient extends Actor {
 
     private void trySpawnClient() {
         spawnTimer++;
-        if (spawnTimer < spawnInterval) {
+        if (spawnTimer < realInterval) {
             return;
         }
         spawnTimer = 0;
-
-        int freeSlot = findFreeSlot();
-        if (freeSlot == -1) {
-            return; // все слоты очереди заняты
+        realInterval = getInterval(60);
+        
+        // рандомный номер слота
+        int num = Greenfoot.getRandomNumber(slotAmount);
+        // размер слота, на 2 больше потому что они крайние
+        int slotsize = ((num+1)*((int)((1600/(slotAmount+1)))));
+        if (slots[num]) {
+            // рандомный слот свободен
+            Client newClient = new Client(num);
+            getWorld().addObject(newClient, (int)(COEF*slotsize), slotY);
+            slots[num] = false;
         }
-
-        Client newClient = new Client();
-        getWorld().addObject(newClient, slotX[freeSlot], slotY[freeSlot]);
-    }
-
-    private int findFreeSlot() {
-        List<Client> currentClients = getWorld().getObjects(Client.class);
-        for (int i = 0; i < slotX.length; i++) {
-            boolean occupied = false;
-            for (Client c : currentClients) {
-                if (c.getX() == slotX[i] && c.getY() == slotY[i]) {
-                    occupied = true;
-                    break;
-                }
-            }
-            if (!occupied) {
-                return i;
-            }
-        }
-        return -1;
     }
 }

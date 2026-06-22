@@ -1,4 +1,9 @@
 import greenfoot.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+
 
 public abstract class Food extends Ingredient {
     public Container home;
@@ -13,10 +18,6 @@ public abstract class Food extends Ingredient {
     public abstract boolean addIngredient(Ingredient ing);
 
     public abstract void removeIngredient(Ingredient ing);
-
-    public void act() {
-        mouseControl();
-    }
     protected void makeHomeFree() {
         if (home != null && home instanceof Plate) {
                 ((Plate) home).makeFree();
@@ -46,7 +47,24 @@ public abstract class Food extends Ingredient {
     protected void checkDrop() {
         MouseInfo mouse = Greenfoot.getMouseInfo();
         if (mouse == null) return;
+        // клиентище
+        List<Order> orders = getIntersectingObjects(Order.class);
+        if (!orders.isEmpty()) {
+            Order order = orders.get(0);
+            boolean accepted = order.tryDeliver(this);
+            if (accepted) {
+                if (home != null && home instanceof Plate) {
+                    ((Plate) home).makeFree();
+                }
+                if (getWorld() != null) {
+                    getWorld().removeObject(this);
+                }
+                return; // Заказ принят, выходим
+            }
+            // Если не accepted, код пойдет дальше и еда просто вернется на место/упадет
+        }
 
+        // клиентское облако
         Client client = getClientAtMouse();
         if (client != null) {
             boolean accepted = client.receiveFood(this);
@@ -59,8 +77,8 @@ public abstract class Food extends Ingredient {
                 }
                 return;
             }
-
         }
+
 
         Plate plate = getContainerAtMouse(Plate.class);
         if (plate != null && plate.isEmpty()) {

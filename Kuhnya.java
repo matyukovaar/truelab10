@@ -4,9 +4,18 @@ public class Kuhnya extends World {
     public static final double COEF = 1;
     public static final boolean TESTZONES = false;
     
-    private static final int WIDTH = (int)(1600 * COEF);
-    private static final int HEIGHT = (int)(800 * COEF);
-
+    public static final int WIDTH = (int)(1600 * COEF);
+    public static final int HEIGHT = (int)(800 * COEF);
+    
+    private GameManager gm;
+    
+    public GameManager getGm() {
+        return gm;
+    }    
+    public SpawnClient getSpawner() {
+        return getGm().getSpawner();
+    }
+    
     public Kuhnya() {    
         super(WIDTH, HEIGHT, 1); 
         GreenfootImage image = new GreenfootImage("kuhnya.png");
@@ -14,7 +23,6 @@ public class Kuhnya extends World {
         setBackground(image);
         prepare();
     }
-    
     private void setZones() {
         // Мусорка
         Trash trash = new Trash();
@@ -72,7 +80,9 @@ public class Kuhnya extends World {
         setZones();
         setIngredientZones();
         addObject(new PauseButton(), getWidth() - 80, 30); 
-        addObject(new GameManager(), 0, 0);
+        GameManager newgm = new GameManager(); 
+        addObject(newgm, 0, 0);
+        gm = newgm;
     }
     
     private int c(int x) {

@@ -8,7 +8,7 @@ public class cookableIngredient extends Ingredient {
     int timeForReady;
     int timeForBurn;
     int timer = 0;
-    int state = 0;
+    public int state = 0;
     int yoff = 0;
     Pan pan = null;
     
@@ -16,11 +16,18 @@ public class cookableIngredient extends Ingredient {
     public cookableIngredient() {
         //super();
     }
-    public void act() {
-        mouseControl();
-    }
     public int ySpawnOffset() {
         return yoff;
+    }
+    public boolean getState() {
+        // System.out.println("1231312вызов метода");
+        return (state==1);
+    }
+    public void setState(int i) {
+        // System.out.println("1231312вызов метода");
+        state = 1;
+        picture = cookedPicture;
+        setPicture();
     }
     public void cook() {
         timer++;
@@ -41,7 +48,7 @@ public class cookableIngredient extends Ingredient {
             setPicture();
         }
     }
-    private void mouseControl() {
+    protected void mouseControl() {
         if (Greenfoot.mousePressed(this)) {
             dragging = true;
             startX = getX();

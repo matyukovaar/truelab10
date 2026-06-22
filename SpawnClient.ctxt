@@ -1,11 +1,13 @@
 #BlueJ class context
 comment0.target=SpawnClient
-comment1.params=
-comment1.target=SpawnClient()
-comment2.params=
-comment2.target=void\ act()
+comment1.params=num
+comment1.target=void\ freeSlot(int)
+comment2.params=r
+comment2.target=int\ getInterval(int)
 comment3.params=
-comment3.target=void\ trySpawnClient()
+comment3.target=SpawnClient()
 comment4.params=
-comment4.target=int\ findFreeSlot()
-numComments=5
+comment4.target=void\ act()
+comment5.params=
+comment5.target=void\ trySpawnClient()
+numComments=6

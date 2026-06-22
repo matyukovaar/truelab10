@@ -2,22 +2,22 @@ import greenfoot.*;
 import java.util.List;
  
 public class Client extends Actor {
+    double COEF = Kuhnya.COEF; 
     private int patience = 900;
     private int maxPatience = 900;
     private Order orderCloud;
- 
-    public Client() {
-        /*
-        int skinNumber = Greenfoot.getRandomNumber(3) + 1;
-        GreenfootImage img = new GreenfootImage("client" + skinNumber + ".png");
-        img.scale(90, 120);
+    private int slotNum;
+    
+    public Client(int num) {
+        GreenfootImage img = new GreenfootImage("client1.png");
+        img.scale((int)(150*COEF), (int)(COEF*100));
         setImage(img);
-        */
+        slotNum = num;
     }
  
     protected void addedToWorld(World world) {
         orderCloud = new Order();
-        world.addObject(orderCloud, getX(), getY() - 90);
+        world.addObject(orderCloud, getX(), getY() - (int)(190 * COEF)); 
     }
  
     public void act() {
@@ -68,7 +68,6 @@ public class Client extends Actor {
         if (!managers.isEmpty()) {
             managers.get(0).addScore(pointsReward);
         }
- 
         removeSelf();
     }
  
@@ -77,11 +76,13 @@ public class Client extends Actor {
     }
  
     private void removeSelf() {
+        Kuhnya world = (Kuhnya)(getWorld());
         if (orderCloud != null && orderCloud.getWorld() != null) {
             getWorld().removeObject(orderCloud);
         }
-        if (getWorld() != null) {
+        if (world != null) {
             getWorld().removeObject(this);
+            world.getSpawner().freeSlot(slotNum);
         }
     }
 }
