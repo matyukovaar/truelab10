@@ -1,4 +1,6 @@
 import greenfoot.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class MashedDish extends Food {
     private Ingredient ing1, ing2;
@@ -29,6 +31,13 @@ public class MashedDish extends Food {
         }
         return false;
     }
+    
+    public List<Ingredient> getIngredients() {
+    List<Ingredient> list = new ArrayList<>();
+    if (ing1 != null) list.add(ing1);
+    if (ing2 != null) list.add(ing2);
+    return list;
+}
     
     public void removeIngredient(Ingredient ing) {
         if (ing1 == ing) {

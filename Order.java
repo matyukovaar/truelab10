@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 public class Order extends Actor {
     // ======================== НАСТРОЙКИ ГЕНЕРАЦИИ ========================
-    private static final int DISHES_COUNT = 2;
+    // private static final int DISHES_COUNT = 2;
 
     private static final Map<Class<? extends Food>, Supplier<Food>> DISH_FACTORIES = new HashMap<>();
     private static final Map<Class<? extends Ingredient>, Supplier<Ingredient>> INGREDIENT_FACTORIES = new HashMap<>();
@@ -14,12 +14,13 @@ public class Order extends Actor {
 
     private static final int SANDWICH_MIN = 1;
     private static final int SANDWICH_MAX = 3; 
-    private static final int RICE_MIN = 0;
+    private static final int RICE_MIN = 1;
     private static final int RICE_MAX = 2;
 
     static {
         DISH_FACTORIES.put(Sandwich.class, Sandwich::new);
         DISH_FACTORIES.put(RiceDish.class, RiceDish::new);
+        DISH_FACTORIES.put(MashedDish.class, MashedDish::new);
 
         INGREDIENT_FACTORIES.put(Bread.class, Bread::new); 
         INGREDIENT_FACTORIES.put(Tomato.class, Tomato::new);
@@ -36,12 +37,16 @@ public class Order extends Actor {
 
         RICE_INGREDIENTS.add(Egg.class);
         RICE_INGREDIENTS.add(Cutlet.class);
+        RICE_INGREDIENTS.add(Tomato.class);
+        RICE_INGREDIENTS.add(Lettuce.class);
+        RICE_INGREDIENTS.add(Sauce.class);
     }
 
     private List<Food> requiredDishes;
     private List<Food> deliveredDishes;
     private boolean isHovered = false;
     private double currentMood = 1.0;
+    private Client owner;
 
     public Order() {
         requiredDishes = new ArrayList<>();
@@ -53,7 +58,10 @@ public class Order extends Actor {
     public void act() {
         checkHover();
     }
-
+    
+    public void setOwner(Client client) {
+        this.owner = client;
+    }
     private void checkHover() {
         if (getWorld() == null) return;
         MouseInfo mouse = Greenfoot.getMouseInfo();
@@ -70,7 +78,9 @@ public class Order extends Actor {
     // ======================== ГЕНЕРАЦИЯ ЗАКАЗА ===========================
     private void generateOrder() {
         List<Class<? extends Food>> availableDishes = new ArrayList<>(DISH_FACTORIES.keySet());
-        for (int i = 0; i < DISHES_COUNT; i++) {
+        // 1 или 2 блюда
+        int amountOfDishes = Greenfoot.getRandomNumber(2)+1; 
+        for (int i = 0; i < amountOfDishes; i++) {
             Class<? extends Food> dishClass = availableDishes.get(Greenfoot.getRandomNumber(availableDishes.size()));
             Food dish = DISH_FACTORIES.get(dishClass).get();
             addRandomIngredients(dish, dishClass);
@@ -84,6 +94,9 @@ public class Order extends Actor {
             dish.addIngredient(bread);
             addRandomFromList(dish, SANDWICH_INGREDIENTS, SANDWICH_MIN, SANDWICH_MAX);
         } else if (dishClass == RiceDish.class) {
+            addRandomFromList(dish, RICE_INGREDIENTS, RICE_MIN, RICE_MAX);
+        }else if (dishClass == MashedDish.class) {
+            // пюре дублирует рис по сути
             addRandomFromList(dish, RICE_INGREDIENTS, RICE_MIN, RICE_MAX);
         }
     }
@@ -249,13 +262,19 @@ public class Order extends Actor {
         this.currentMood = percent;
         if (!isHovered) redrawCloud(); else drawTextOverlay(); 
     }
-
+    
     public boolean tryDeliver(Food food) {
         for (Food req : requiredDishes) {
             if (!deliveredDishes.contains(req)) {
                 if (isDishCorrect(food, req)) {
                     deliveredDishes.add(req);
                     if (!isHovered) redrawCloud(); else drawTextOverlay();
+                    
+                    // <-- ДОБАВЬТЕ ЭТО:
+                    if (isComplete() && owner != null) {
+                        owner.onOrderComplete();
+                    }
+                    
                     return true;
                 }
             }
@@ -322,6 +341,7 @@ public class Order extends Actor {
             sb.append(i + 1).append(". ");
             if (dish instanceof Sandwich) sb.append("Бутерброд");
             else if (dish instanceof RiceDish) sb.append("Рис");
+            else if (dish instanceof MashedDish) sb.append("Пюре");
             else sb.append("Блюдо");
             
             appendIngredients(sb, dish, " (", ", ", ")");

@@ -17,13 +17,14 @@ public class Client extends Actor {
  
     protected void addedToWorld(World world) {
         orderCloud = new Order();
-        world.addObject(orderCloud, getX(), getY() - (int)(190 * COEF)); 
+        orderCloud.setOwner(this);
+        world.addObject(orderCloud, getX(), getY() - (int)(180*COEF));
     }
  
     public void act() {
-        if (GameManager.isPaused) return;
-        losePatience();
-    }
+            if (GameManager.isPaused) return;
+            losePatience();
+        }
  
     private void losePatience() {
         if (patience > 0) {
@@ -73,6 +74,9 @@ public class Client extends Actor {
  
     private void leaveAngry() {
         removeSelf();
+    }
+    public void onOrderComplete() {
+        rewardAndLeave();
     }
  
     private void removeSelf() {
