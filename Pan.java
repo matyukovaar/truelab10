@@ -34,17 +34,20 @@ public class Pan extends Container {
     private void updateImage() {
         GreenfootImage photo = new GreenfootImage(c(x2 - x1), c(y2 - y1));
         
-        if (cookingState == 0) {
-            photo.setColor(new Color(0, 255, 0, 100));
-        } else if (cookingState == 1) {
-            photo.setColor(new Color(255, 165, 0, 150));
-        } else if (cookingState == 2) {
-            photo.setColor(new Color(0, 255, 0, 200));
-        } else if (cookingState == 3) {
-            photo.setColor(new Color(50, 50, 50, 200));
+        // отладочно
+        if (TESTZONES) {
+            if (cookingState == 0) {
+                photo.setColor(new Color(0, 255, 0, 100));
+            } else if (cookingState == 1) {
+                photo.setColor(new Color(255, 165, 0, 150));
+            } else if (cookingState == 2) {
+                photo.setColor(new Color(0, 255, 0, 200));
+            } else if (cookingState == 3) {
+                photo.setColor(new Color(50, 50, 50, 200));
+            }
+            photo.fill();
+            setImage(photo);
         }
-        photo.fill();
-        setImage(photo);
     }
     
     public boolean isEmpty() {

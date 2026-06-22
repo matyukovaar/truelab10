@@ -2,7 +2,7 @@ import greenfoot.*;
 
 public class Kuhnya extends World {
     public static final double COEF = 0.5;
-    public static final boolean TESTZONES = true;
+    public static final boolean TESTZONES = false;
     
     private static final int WIDTH = (int)(1600 * COEF);
     private static final int HEIGHT = (int)(800 * COEF);
@@ -51,21 +51,21 @@ public class Kuhnya extends World {
     
     private void setIngredientZones() {
         // База
-        addObject(new IngredientZone("bread", "bread.png", 170, 100), c(840), c(740));
-        addObject(new IngredientZone("mashed", "mashed.png", 170, 100), c(1040), c(740));
-        addObject(new IngredientZone("rice", "rice.png", 170, 100), c(1240), c(740));
+        addObject(new IngredientZone("bread", 170, 100), c(840), c(740));
+        addObject(new IngredientZone("mashed", 170, 100), c(1040), c(740));
+        addObject(new IngredientZone("rice", 170, 100), c(1240), c(740));
         
         // Дополнительные
-        addObject(new IngredientZone("sauce", "sauce.png", 120, 100), c(700), c(460));
-        addObject(new IngredientZone("tomato", "tomato.png", 120, 100), c(680), c(560));
-        addObject(new IngredientZone("lettuce", "lettuce.png", 120, 100), c(660), c(660));
+        addObject(new IngredientZone("sauce", 120, 100), c(700), c(460));
+        addObject(new IngredientZone("tomato", 120, 100), c(680), c(560));
+        addObject(new IngredientZone("lettuce", 120, 100), c(660), c(660));
         
         // Для жарки
-        addObject(new IngredientZone("egg", "egg.png", 190, 100), c(210), c(735));
-        addObject(new IngredientZone("cutlet", "cutlet.png", 180, 100), c(425), c(735));
+        addObject(new IngredientZone("egg", 190, 100), c(210), c(735));
+        addObject(new IngredientZone("cutlet", 180, 100), c(425), c(735));
         
         // Стаканы
-        addObject(new CupSpawner(100, 100), c(50), c(450));
+        addObject(new IngredientZone("cup", 150, 150), c(90), c(450));
     }
     
     private void prepare() {

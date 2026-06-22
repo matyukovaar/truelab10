@@ -44,12 +44,11 @@ public class cookableIngredient extends Ingredient {
                     setLocation(mouse.getX(), mouse.getY() - getImage().getHeight()/2 + 15);
                 }
             }
-            if (Greenfoot.mouseDragEnded(this)) {
+            if (Greenfoot.mouseClicked(null)) {
                 dragging = false;
                 MouseInfo mouse = Greenfoot.getMouseInfo();
                 if (mouse != null) {
                     Trash trash = getContainerAtMouse(Trash.class);
-                    
                     if (state == 1 || state == 3) {
                         if (trash != null) {
                             pan.makeFree();
@@ -58,7 +57,6 @@ public class cookableIngredient extends Ingredient {
                             pan.returnIngredient(this);
                         }
                     }
-                    
                     if (state == 2) {
                         Plate plate = getContainerAtMouse(Plate.class);
                         if (trash != null) {

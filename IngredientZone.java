@@ -6,10 +6,15 @@ public class IngredientZone extends Actor {
     private String ingredientType;
     private GreenfootImage zoneImage;
     
-    public IngredientZone(String type, String imageName, int width, int height) {
+    public IngredientZone(String type, int width, int height) {
     this.ingredientType = type;
     zoneImage = new GreenfootImage(c(width), c(height));
-    zoneImage.setColor(new Color(255, 0, 0, 0));
+    
+    // отладочные выделения
+    int t;
+    if (Kuhnya.TESTZONES) t = 100;
+    else t = 0;
+    zoneImage.setColor(new Color(255, 0, 0, t));
     zoneImage.fill();
     
     setImage(zoneImage);
@@ -43,6 +48,7 @@ public class IngredientZone extends Actor {
             case "lettuce": return new Lettuce();
             case "egg": return new Egg();
             case "cutlet": return new Cutlet();
+            case "cup": return new Cup();
             default: return null;
         }
     }

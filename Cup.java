@@ -61,7 +61,7 @@ public class Cup extends Ingredient {
                 setLocation(mouse.getX(), mouse.getY() - getImage().getHeight()/2 + 15);
             }
         }
-        if (Greenfoot.mouseDragEnded(this)) {
+        if (Greenfoot.mouseClicked(null)) {
             dragging = false;
             if (getWorld() != null) {
                 checkDrop();

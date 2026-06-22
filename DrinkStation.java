@@ -43,15 +43,18 @@ public class DrinkStation extends Container {
     private void updateImage() {
         GreenfootImage photo = new GreenfootImage(c(x2 - x1), c(y2 - y1));
         
-        if (state == 0) {
-            photo.setColor(new Color(0, 255, 0, 100));
-        } else if (state == 1) {
-            photo.setColor(new Color(255, 165, 0, 150));
-        } else if (state == 2) {
-            photo.setColor(new Color(0, 255, 0, 200));
+        // отладочно
+        if (TESTZONES) {
+            if (state == 0) {
+                photo.setColor(new Color(0, 255, 0, 100));
+            } else if (state == 1) {
+                photo.setColor(new Color(255, 165, 0, 150));
+            } else if (state == 2) {
+                photo.setColor(new Color(0, 255, 0, 200));
+            }
+            photo.fill();
+            setImage(photo);
         }
-        photo.fill();
-        setImage(photo);
     }
     
     public boolean isEmpty() {

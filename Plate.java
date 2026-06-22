@@ -4,17 +4,20 @@ public class Plate extends Container {
     Food food;
     
     public void act() {
-        if (isEmpty()) {
-            GreenfootImage photo = getImage();
-            photo.setColor(new Color(0, 255, 0, 100)); 
-            photo.fill();
-            setImage(photo);
-        }
-        else {
-            GreenfootImage photo = getImage();
-            photo.setColor(new Color(255, 0, 0, 100)); 
-            photo.fill();
-            setImage(photo);
+        // отладочно
+        if (TESTZONES) {
+            if (isEmpty()) {
+                GreenfootImage photo = getImage();
+                photo.setColor(new Color(0, 255, 0, 100)); 
+                photo.fill();
+                setImage(photo);
+                }
+            else {
+                GreenfootImage photo = getImage();
+                photo.setColor(new Color(255, 0, 0, 100)); 
+                photo.fill();
+                setImage(photo);
+            }
         }
     }
     
@@ -39,7 +42,7 @@ public class Plate extends Container {
             food.setLocation(c(centerX), c(y2-food.ySpawnOffset()));
             return true;
         }
-        // Хлеб → Sandwich
+        // Хлеб = Sandwich
         if (ing instanceof Bread) {
             food = new Sandwich();
             food.addIngredient(ing);
@@ -49,7 +52,7 @@ public class Plate extends Container {
             getWorld().removeObject(ing);
             return true;
         }
-        // Рис → RiceDish
+        // Рис = RiceDish
         if (ing instanceof Rice) {
             food = new RiceDish();
             food.addIngredient(ing);
@@ -59,7 +62,7 @@ public class Plate extends Container {
             getWorld().removeObject(ing);
             return true;
         }
-        // Пюре → MashedDish
+        // Пюре = MashedDish
         if (ing instanceof MashedPotatoes) {
             food = new MashedDish();
             food.addIngredient(ing);

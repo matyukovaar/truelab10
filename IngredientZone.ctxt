@@ -1,7 +1,7 @@
 #BlueJ class context
 comment0.target=IngredientZone
-comment1.params=type\ imageName\ width\ height
-comment1.target=IngredientZone(java.lang.String,\ java.lang.String,\ int,\ int)
+comment1.params=type\ width\ height
+comment1.target=IngredientZone(java.lang.String,\ int,\ int)
 comment2.params=
 comment2.target=void\ act()
 comment3.params=
